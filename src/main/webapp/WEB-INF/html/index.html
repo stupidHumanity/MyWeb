@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>tip</title>
+    <style type="text/css">
+        .content {
+            min-width: 12px;
+           border-radius: 2px;
+            position: absolute;
+            background-color: black;
+            color: white;
+            white-space: nowrap;
+            padding:3px 5px;
+        }
+
+        .triangle {
+            width: 0px;
+            height: 0px;
+            border: 12px dashed transparent;
+            position: absolute;
+            border-bottom: 12px solid black;
+            top: -12px;
+            left: -7px;
+
+        }
+    </style>
+</head>
+<body>
+<div style="z-index: 99; position: absolute; left: 151.867px; top: 110.267px;">
+    <i class="triangle"></i>
+    <span class="content" style="display: none;">here is tip.this sentence is as long as you see.<br>another line.</span>
+</div>
+<p></p>
+<!--<i class="triangle-left"></i>-->
+<!--<i class="triangle-top"></i>-->
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+
+    function add() {
+        console.log("arguments:" + arguments);
+
+    }
+
+    add();
+</script>

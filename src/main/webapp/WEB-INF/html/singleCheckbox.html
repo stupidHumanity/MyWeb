@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>single checkbox</title>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<table name="table" style="margin: 40px 0px 0px 70px;">
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item1</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item2</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item3</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item4</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item5</td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>item6</td>
+    </tr>
+</table>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
+<script type="text/javascript">
+    $().ready(function () {
+        $("table[name='table']").singleChecked({
+            after: function (checkBox, checked) {
+                var txt = $(checkBox).parent().next().text();
+                checked = checked == true ? "被选中了" : "取消了选中";
+                console.log(txt + checked + "。");
+            }
+        });
+
+    });
+
+</script>
