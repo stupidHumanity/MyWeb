@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>tip</title>
     <style type="text/css">
         .content {
@@ -26,9 +27,9 @@
 </head>
 <body>
 <div style="z-index: 99; position: absolute; left: 151.867px; top: 110.267px;">
-    <i class="triangle"></i>
-    <span class="content" style="display: none;">here is tip.this sentence is as long as you see.<br>another line.</span>
+    <p title="赵友文24379471&#10;代杨967466161" style="white-space: nowrap;text-align: center;">赵友文24379471<br/>...</p>
 </div>
+<div id="testBlock"></div>
 <p></p>
 <!--<i class="triangle-left"></i>-->
 <!--<i class="triangle-top"></i>-->
@@ -37,10 +38,25 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 
-    function add() {
-        console.log("arguments:" + arguments);
-
+    function ellipsisArray(arrStr) {
+        if (arrStr == null || arrStr == undefined||arrStr=="") return;
+        var arr = arrStr.split(",");
+        var p = document.createElement("p");
+        p.innerHTML=arr[0];
+        p.style.whiteSpace="nowrap";
+        p.style.textAlign="center";
+        if (arr.length > 1) {
+            p.innerHTML+='<br/>...';
+            p.title=arrStr.replace(new RegExp(",","g"),'\n');
+        }
+            return p;
     }
 
-    add();
+
+    $().ready(function(){
+        var arrStr="赵友文24379471,代杨967466161,赵友文24379471,代杨967466161";
+        var res=ellipsisArray(arrStr);
+        $("#testBlock").append(res);
+
+    });
 </script>
