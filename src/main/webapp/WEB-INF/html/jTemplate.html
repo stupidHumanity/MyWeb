@@ -1,0 +1,32 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>jquery tmpl</title>
+</head>
+<body>
+<div id="testBlock"></div>
+</body>
+</html>
+
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/jquery.tmpl.js"></script>
+<script type="text/javascript">
+
+$().ready(function(){
+    var obj={title:"this is a title",content:"nothing special"}
+
+    var  content=$("#tmpl-demo").tmpl(obj);
+   $("#tmpl-demo").tmpl(obj).appendTo("#testBlock");
+
+  $.template("tmpl2",'<p title="${content}" style="white-space: nowrap;text-align: center;">${title}<br/>...</p>');
+
+    $.tmpl("tmpl2",obj).appendTo("#testBlock");
+
+});
+
+</script>
+
+<script id="tmpl-demo" type="text/x-jquery-tmpl">
+    <p title="${title}" style="white-space: nowrap;text-align: center;">${content}<br/>...</p>
+</script>
+
