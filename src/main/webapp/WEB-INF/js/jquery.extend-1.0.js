@@ -7,7 +7,7 @@
         settings.after = undefined;//事件触发之后要做的事情
         if (options != undefined) ;
         $.extend(settings, options);
-        settings.checkBoxs = $(this).find("input:checkbox");
+        settings.checkBoxs = $(this).find("input:checkbox");　
         $(this).on("click", "input:checkbox", function () {
             var $e = $(event.target);
             var checked = $e.prop("checked");

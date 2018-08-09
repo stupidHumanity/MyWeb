@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>echarts</title>
+</head>
+<body>
+<div id="main" style="width:600px;height:400px;"></div>
+<span style="display:block;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:100px;" title="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss">ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</span>
+</body>
+</html>
+<script type="text/javascript" src="../js/echarts/echarts.js"></script>
+<script type="text/javascript">
+var myChart=echarts.init(document.getElementById("main"));
+
+var option={
+    title:{text:"eCharts 入门",link:"https://www.baidu.com"},
+    tooltip:{},
+    legend:{data:["销量"]},
+    xAxis:{data:["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]},
+    yAxis: {},
+    series: [{
+        name: '销量',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+    }]
+}
+myChart.setOption(option);
+</script>
