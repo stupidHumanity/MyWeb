@@ -1,0 +1,21 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>layer</title>
+</head>
+<body>
+<div id="layer-tip2" style="background-color: #1E9FFF;color: #FD482C;height: 40px;">this is useless layer</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/layer.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+$("body").on("click",function(){
+
+    layer.alert('内容');
+});
+
+</script>
+<script type="text/html" id="#layer-tip">
+    <div id="layer-tip" style="background-color: #1E9FFF;color: #FD482C;height: 40px;">this is useless layer</div>
+</script>

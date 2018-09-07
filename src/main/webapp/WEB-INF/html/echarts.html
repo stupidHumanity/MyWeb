@@ -5,7 +5,7 @@
 </head>
 <body>
 <div id="main" style="width:600px;height:400px;"></div>
-<span style="display:block;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:100px;" title="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss">ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</span>
+<span style="display:inline-block;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:100px;" title="なにこれ">ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</span>
 </body>
 </html>
 <script type="text/javascript" src="../js/echarts/echarts.js"></script>
@@ -15,14 +15,51 @@ var myChart=echarts.init(document.getElementById("main"));
 var option={
     title:{text:"eCharts 入门",link:"https://www.baidu.com"},
     tooltip:{},
-    legend:{data:["销量"]},
-    xAxis:{data:["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]},
+    legend:{data:["销量","销量2"]},
+    xAxis:{data:["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"],axisLine:{lineStyle:{color:"#ff0000"}},axisLabel:{color:"#0f0"}},
     yAxis: {},
     series: [{
         name: '销量',
         type: 'bar',
+        barWidth:'10%',
         data: [5, 20, 36, 10, 10, 20]
-    }]
+    },
+        {
+            name: '销量2',
+            type: 'bar',
+            barWidth:'10%',
+            data: [5, 2, 3, 1, 1, 6]
+        }]
 }
 myChart.setOption(option);
+
+var username = 'testuser';
+var fileToSearch = 'README.md';
+
+$.getJSON('https://api.github.com/user/' + username + '/repositories')
+    .then(function(repositories) {
+        return repositories[0].name;
+    })
+    .then(function(lastUpdatedRepository) {
+        return $.getJSON('https://api.github.com/user/' + username + '/repository/' + lastUpdatedRepository + '/files');
+    })
+    .then(function(files) {
+        var README = null;
+
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].name.indexOf(fileToSearch) >= 0) {
+                README = files[i].path;
+
+                break;
+            }
+        }
+
+        return README;
+    })
+    .then(function(README) {
+        return $.getJSON('https://api.github.com/user/' + username + '/repository/' + lastUpdatedRepository + '/file/' + README + '/content');
+    })
+    .then(function(content) {
+        console.log(content);
+    });
 </script>
