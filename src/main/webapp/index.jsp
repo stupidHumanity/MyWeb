@@ -8,6 +8,6 @@
     <title>自定义标签</title>
 </head>
 <body>
-<y:price value="10023513245125"/>
+<y:price value="5000000"/>
 </body>
 </html>

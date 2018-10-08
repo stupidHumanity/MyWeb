@@ -12,7 +12,7 @@ public class PriceTag extends BodyTagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        DecimalFormat df = new DecimalFormat("###,###,###.00");
+        DecimalFormat df = new DecimalFormat("####,####,####.00￥");
         try {
             BigDecimal price = new BigDecimal(this.value);
             this.value = df.format(price);
