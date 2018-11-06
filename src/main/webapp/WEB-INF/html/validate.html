@@ -14,46 +14,25 @@
     </style>
 </head>
 <body>
-<form id="myform" url="www.baidu.com">
-    <input name="userid" type="hidden" value="9527"/>
-    <input name="useradress" type="text" value="xxxxxxxxxxx" hidden/>
-    userName:<input name="username" type="text" essential="用户名" value="1"/><br/>
-    passWord:<input name="password" type="password" essential="密码" regex="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,8}$"
-                    value="1234asd"
-                    message="请输入6~8位密码，且至少包含数字字母俩种类型"/><br/>
-    userJob:<select name="userjob" essential="职业" style="width:160px;">
-    <option value="">请选择</option>
-    <option value="1" selected> がくせ</option>
-    <option value="2">しゃいん</option>
-    <option value="3">せんせ</option>
-</select><br/>
-    <span></span>
-    userAge:<input name="age" type="text" number="0,99,0" message="请输入正确的年龄。" essential="年龄"/><br/>
-
-    <a href="javascript:void(0);" onclick="submit()">提交</a>
-</form>
+<input type="radio" name="lossTypeCode" value="LOSS_TYPE_CODE1" text="合同超期不续约">&nbsp<span class="iboss-text">合同超期不续约</span>
+<input type="radio" name="lossTypeCode" value="LOSS_TYPE_CODE2" text="合同超期不续约2">&nbsp<span class="iboss-text">合同超期不续约2</span>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery.validator-1.0.js"></script>
 
 <script type="text/javascript">
-    var validator = new Validator();
-    validator.setParameters({
-        delay: 3000,
-        showError: true,
-        offset: ["3px", "0px"],
-        triangleSize: "4px",
-        showError:true
-    });
-
     function submit() {
+      var lossType= $("body").find("input[name='lossTypeCode']:checked");
+      var val=lossType.val();
+      var text=lossType.attr("text");
 
-        var form = $(event.target).parents("form").eq(0);
-        var failed = validator.validate(form);
+      console.log("lossType:"+text+" and lossTypeCode:"+val);
 
-        console.log("failed:" + failed);
+
     }
+
+
 
 
 </script>

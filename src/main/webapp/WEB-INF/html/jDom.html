@@ -27,7 +27,7 @@
 </head>
 <body>
 <div style="z-index: 99; position: absolute; left: 151.867px; top: 110.267px;">
-    <p title="赵友文24379471&#10;代杨967466161" style="white-space: nowrap;text-align: center;">赵友文24379471<br/>...</p>
+    <p id="test" title="赵友文24379471&#10;代杨967466161" style="white-space: nowrap;text-align: center;">赵友文24379471<br/>...</p>
 </div>
 <div id="testBlock"></div>
 <p></p>
@@ -57,6 +57,12 @@
         var arrStr="赵友文24379471,代杨967466161,赵友文24379471,代杨967466161";
         var res=ellipsisArray(arrStr);
         $("#testBlock").append(res);
+   var dom=     document.createElement("div");
+        dom.innerHTML="<span>this is a text</span>"
+        $(dom).find("span").html("this is not a text");
+
+    console.log(  dom.outerHTML);
 
     });
+
 </script>

@@ -9,13 +9,6 @@
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript">
-$("body").click(function(){
-
-    console.log('single click');
-});
-$("body").dblclick(function(){
-    console.log('double click');
-});
 
 
 
@@ -27,8 +20,13 @@ $("body").dblclick(function(){
         return count;
     }
 
-var para={"id":"123"};
-console.log(countAttribue(undefined));
+    function regex() {
+        var start='2017-10-30';
+        var arr=start.match(/\d+/g);
+        var year=arr[0],month=arr[1];
+        console.log(year+'年'+month+"月");
+    }
+
 
 </script>
 <script type="text/html" id="#layer-tip">
