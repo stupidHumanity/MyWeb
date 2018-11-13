@@ -1,4 +1,6 @@
 ;(function ($) {
+    var ondebug=true;
+
     /**
      * 单选checkBox
      */
@@ -66,73 +68,90 @@
         setting.extra = undefined;//额外序列化标签
         setting.base = "input,select,textarea";//序列化标签
         setting.area = this;
+        setting.subSelector=null;
         $.extend(setting, options);
-        var data = {};
-        var tags = setting.base;
-        if (setting.extra != undefined) {
-            tags = tags + "," + setting.extra;
+
+        if (setting.subSelector == null) {
+            return doSerialize(this);
+        } else {
+            var datas = new Array();
+            $(this).find(setting.subSelector).each(function (i, e) {
+                var data = doSerialize(e);
+                datas.push(data)
+            });
+            return datas;
         }
-        var items = $(this).find(tags);
-        if (items.size() == 0) {
-            console.log("no filed found in this container");
-            return data;
-        }
-        items.each(function (i, e) {
-            var $e = $(e);
 
-            //没有name属性无法序列化
-            var name = $e.attr("name");
-            if (name == undefined || name == "") return;
-            //配置要求隐藏元素不序列化
-            var visible = $e.css("display") != "none";
-            if (!visible && !setting.includeHidden) return;
+        function doSerialize(selector){
+            var data = {};
+            var tags = setting.base;
+            if (setting.extra != undefined) {
+                tags = tags + "," + setting.extra;
+            }
+            var items = $(selector).find(tags);
+            if (items.size() == 0) {
+                consoleError("no filed found in this container");
+                return data;
+            }
+            items.each(function (i, e) {
+                var $e = $(e);
 
-            var tagName = e.tagName.toLowerCase()
-            var isBase = setting.base.indexOf(tagName) > -1;
-            var value;
-            if (isBase) {
-                //多选按钮特殊处理
-                if (tagName == "input" && $e.attr("type") == 'radio')
-                {
+                //没有name属性无法序列化
+                var name = $e.attr("name");
+                if (name == undefined || name == "") return;
+                //配置要求隐藏元素不序列化
+                var visible = $e.css("display") != "none";
+                if (!visible && !setting.includeHidden) return;
 
-                    if (data[name] != undefined) return;
-                    var $checked = $(setting.area).find("input[name='" + name + "']:checked");
-                    if ($checked.length == 0) {
-                        data[name] = "";
-                        return;
+                var tagName = e.tagName.toLowerCase()
+                var isBase = setting.base.indexOf(tagName) > -1;
+                var value;
+                if (isBase) {
+                    //多选按钮特殊处理
+                    if (tagName == "input" && $e.attr("type") == 'radio')
+                    {
+
+                        if (data[name] != undefined) return;
+                        var $checked = $(setting.area).find("input[name='" + name + "']:checked");
+                        if ($checked.length == 0) {
+                            data[name] = "";
+                            return;
+                        }
+                        data[name] = $checked.val();
+                        var text = $checked.attr("text");
+
+                        if (text != undefined) {
+                            var attrName = name.endsWith("Code") ? name.replace("Code", "") : name + "Text";
+                            data[attrName] = text;
+                        }
                     }
-                    data[name] = $checked.val();
-                    var text = $checked.attr("text");
-
-                    if (text != undefined) {
-                        var attrName = name.endsWith("Code") ? name.replace("Code", "") : name + "Text";
-                        data[attrName] = text;
+                    else {
+                        value = $e.val();
                     }
                 }
                 else {
-                    value = $e.val();
+                    value = $e.text();
                 }
-            }
-            else {
-                value = $e.text();
-            }
 
-            //控件值异常不序列化
-            if (value == undefined) return;
-            //配置要求空值不序列化
-            var trimValue = value.trim();
-            if (trimValue == "" && setting.allowEmpty == false) return;
-            //select双name文本序列化
-            if (e.tagName == "SELECT" && name.indexOf(",") > -1) {
-                var names = name.split(",");
-                data[names[0]] = trimValue;
-                data[names[1]] = $(e).find("option[value='" + value + "']").text().trim();
-            } else {
-                data[name] = trimValue;
-            }
-        });
+                //控件值异常不序列化
+                if (value == undefined) return;
+                //配置要求空值不序列化
+                var trimValue = value.trim();
+                if (trimValue == "" && setting.allowEmpty == false) return;
+                //select双name文本序列化
+                if (e.tagName == "SELECT" && name.indexOf(",") > -1) {
+                    var names = name.split(",");
+                    data[names[0]] = trimValue;
+                    data[names[1]] = $(e).find("option[value='" + value + "']").text().trim();
+                } else {
+                    data[name] = trimValue;
+                }
+            });
 
-        return data;
+            return data;
+
+        }
+
     }
 
     /**
@@ -160,6 +179,18 @@
         }
         return false;
     }
+
+
+    /**
+     * 输出错误提示
+     * @param message
+     */
+    function consoleError(message){
+        if(ondebug){
+        console.error(message);
+        }
+    }
+
 })(jQuery);
 
 
