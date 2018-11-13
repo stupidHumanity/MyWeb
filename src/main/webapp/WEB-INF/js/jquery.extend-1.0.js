@@ -7,7 +7,7 @@
         settings.after = undefined;//事件触发之后要做的事情
         if (options != undefined) ;
         $.extend(settings, options);
-        settings.checkBoxs = $(this).find("input:checkbox");　
+        settings.checkBoxs = $(this).find("input:checkbox");
         $(this).on("click", "input:checkbox", function () {
             var $e = $(event.target);
             var checked = $e.prop("checked");
@@ -65,6 +65,7 @@
         setting.trimString = true;//trim值
         setting.extra = undefined;//额外序列化标签
         setting.base = "input,select,textarea";//序列化标签
+        setting.area = this;
         $.extend(setting, options);
         var data = {};
         var tags = setting.base;
@@ -77,48 +78,88 @@
             return data;
         }
         items.each(function (i, e) {
-            var item = $(e);
-            var hidden = item.css("display") == "none";
-            var name = item.attr("name");
-            //没有name属性不序列化
+            var $e = $(e);
+
+            //没有name属性无法序列化
+            var name = $e.attr("name");
             if (name == undefined || name == "") return;
-            var baseTags = setting.base.split(",");
-            var isBase = false;
-            for (var i = 0; i < baseTags.length; i++) {
-                if (item.is(baseTags[i])) {
-                    isBase = true;
-                    break;
-                }
-            }
+            //配置要求隐藏元素不序列化
+            var visible = $e.css("display") != "none";
+            if (!visible && !setting.includeHidden) return;
+
+            var tagName = e.tagName.toLowerCase()
+            var isBase = setting.base.indexOf(tagName) > -1;
             var value;
             if (isBase) {
-                value = item.val();
+                //多选按钮特殊处理
+                if (tagName == "input" && $e.attr("type") == 'radio')
+                {
+
+                    if (data[name] != undefined) return;
+                    var $checked = $(setting.area).find("input[name='" + name + "']:checked");
+                    if ($checked.length == 0) {
+                        data[name] = "";
+                        return;
+                    }
+                    data[name] = $checked.val();
+                    var text = $checked.attr("text");
+
+                    if (text != undefined) {
+                        var attrName = name.endsWith("Code") ? name.replace("Code", "") : name + "Text";
+                        data[attrName] = text;
+                    }
+                }
+                else {
+                    value = $e.val();
+                }
             }
             else {
-                value = item.text();
+                value = $e.text();
             }
-            //配置要求隐藏元素不序列化
-            if (hidden && !setting.includeHidden) return;
+
             //控件值异常不序列化
             if (value == undefined) return;
-            value = value.trim();
             //配置要求空值不序列化
-            if (value == "" && setting.allowEmpty == false) return;
-            data[name] = value;
+            var trimValue = value.trim();
+            if (trimValue == "" && setting.allowEmpty == false) return;
+            //select双name文本序列化
+            if (e.tagName == "SELECT" && name.indexOf(",") > -1) {
+                var names = name.split(",");
+                data[names[0]] = trimValue;
+                data[names[1]] = $(e).find("option[value='" + value + "']").text().trim();
+            } else {
+                data[name] = trimValue;
+            }
         });
-        for (var key in data) {
-            var value = data[key];
-            //去掉字符串前后的空格
-            if (setting.trimString) {
-                value = typeof(value) == "string" ? value.trim() : value;
-                data[key] = value;
-            }
-            value = data[key];
-            //是否允许空值
-            if (!setting.allowEmpty && value == "") {
-                delete data[key];
-            }
-        }
+
         return data;
     }
+
+    /**
+     * 判断一个对象是否为空
+     * @param data
+     * @returns {boolean}
+     */
+    $.isEmpty = function (data) {
+        console.log(typeof data);
+
+        if (data == null) {
+            return true;
+        }
+        else if (data == undefined) {
+            return true;
+        }
+        else if (data.toString() == "") {
+            return true;
+        } else if ((typeof data) == 'object') {
+            var count = 0;
+            for (var key in data) {
+                count++;
+            }
+            return count == 0;
+        }
+        return false;
+    }
 })(jQuery);
+
+

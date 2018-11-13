@@ -3,29 +3,53 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>layer</title>
 </head>
+<style type="text/css">
+    .change{
+     height: 50px !important;
+    }
+</style>
 <body>
-<div id="layer-tip2" style="background-color: #1E9FFF;color: #FD482C;height: 40px;">this is useless layer</div>
+<div style="background-color: red; height: 100px;vertical-align: middle;">
+    <div id="layer-tip2" style="background-color: #1E9FFF;color: #FD482C;height: 40px; width: 400px;"
+          reve>this is useless layer</div>
+</div>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
 <script type="text/javascript">
 
+    $("#layer-tip2").on("click", function () {
+        var $e = $(event.target);
+        if ($e.hasClass("change")) {
+            $e.removeClass("change");
+        } else {
+            $e.addClass("change");
+        }
+    });
 
-
-    function countAttribue(obj){
-        var count=0;
-        for(var key in obj){
+    function countAttribue(obj) {
+        var count = 0;
+        for (var key in obj) {
             count++;
         }
         return count;
     }
 
     function regex() {
-        var start='2017-10-30';
-        var arr=start.match(/\d+/g);
-        var year=arr[0],month=arr[1];
-        console.log(year+'年'+month+"月");
+        var start = '2017-10-30';
+        var arr = start.match(/\d+/g);
+        var year = arr[0], month = arr[1];
+        console.log(year + '年' + month + "月");
     }
+
+    console.log($.isEmpty(null));
+    console.log($.isEmpty(""));
+    console.log($.isEmpty(undefined));
+    console.log($.isEmpty({}));
+    console.log($.isEmpty([]));
+    console.log($.isEmpty(0));
+    console.log($.isEmpty(countAttribue));
 
 
 </script>
