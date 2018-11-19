@@ -146,7 +146,7 @@ function Validator() {
         var value = $input.val().trim();
         if (containEmpty(rule, value)) return true;
         var regex = "^-?(?!0[0-9]+)[0-9]+(\\.[0-9]+)?$";
-        //^-?(?!0[0-9]+)[0-9]+(\.[0-9]{0,2})?$
+        //^-?(?!0[0-9]+)[0-9]+(\.[0-9]{1,2})?$
         var pattern = new RegExp(regex);
         if (!pattern.test(value)) {
             showMessage($input, "请输入一个数字。", setting.delay);
@@ -335,6 +335,13 @@ function Validator() {
         }
 
         return count + "px";
+    }
+
+    $.fn.onRegexCheck=function(){
+        var $items=$(this).length==1:$
+          $()
+
+
     }
 
 }

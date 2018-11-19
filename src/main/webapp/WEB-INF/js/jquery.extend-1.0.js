@@ -66,11 +66,12 @@
         setting.includeHidden = true;//序列化隐藏值
         setting.trimString = true;//trim值
         setting.extra = undefined;//额外序列化标签
+        setting.changed = false; // 是否只序列化修改过的
         setting.base = "input,select,textarea";//序列化标签
         setting.area = this;
-        setting.subSelector=null;
+        setting.subSelector = null;
+        setting.exclude = "exclude";
         $.extend(setting, options);
-
         if (setting.subSelector == null) {
             return doSerialize(this);
         } else {
@@ -82,7 +83,7 @@
             return datas;
         }
 
-        function doSerialize(selector){
+        function doSerialize(selector) {
             var data = {};
             var tags = setting.base;
             if (setting.extra != undefined) {
@@ -90,26 +91,38 @@
             }
             var items = $(selector).find(tags);
             if (items.size() == 0) {
-                consoleError("no filed found in this container");
+                console.log("no filed found in this container");
                 return data;
             }
             items.each(function (i, e) {
-                var $e = $(e);
-
-                //没有name属性无法序列化
-                var name = $e.attr("name");
+                var item = $(e);
+                var hidden = item.css("display") == "none";
+                var name = item.attr("name");
+                //没有name属性不序列化
                 if (name == undefined || name == "") return;
-                //配置要求隐藏元素不序列化
-                var visible = $e.css("display") != "none";
-                if (!visible && !setting.includeHidden) return;
+                //判断是否只序列化修改过的
+                if (setting.changed == true) {
+                    if (item.attr("isChanged") == "no") {
+                        return;
+                    }
+                }
+                //设置排除标签的不序列化
+                if (e.hasAttribute(setting.exclude)) {
+                    return;
+                }
 
-                var tagName = e.tagName.toLowerCase()
-                var isBase = setting.base.indexOf(tagName) > -1;
+                var baseTags = setting.base.split(",");
+                var isBase = false;
+                for (var i = 0; i < baseTags.length; i++) {
+                    if (item.is(baseTags[i])) {
+                        isBase = true;
+                        break;
+                    }
+                }
                 var value;
                 if (isBase) {
-                    //多选按钮特殊处理
-                    if (tagName == "input" && $e.attr("type") == 'radio')
-                    {
+
+                    if (e.tagName == "INPUT" && item.attr("type") == 'radio') {//多选按钮特殊处理
 
                         if (data[name] != undefined) return;
                         var $checked = $(setting.area).find("input[name='" + name + "']:checked");
@@ -125,14 +138,20 @@
                             data[attrName] = text;
                         }
                     }
+                    else if (e.tagName == "INPUT" && item.attr("type") == 'checkbox') {
+                        data[name] = item.prop("checked");
+                    }
                     else {
-                        value = $e.val();
+
+                        value = item.val();
+
                     }
                 }
                 else {
-                    value = $e.text();
+                    value = item.text();
                 }
-
+                //配置要求隐藏元素不序列化
+                if (hidden && !setting.includeHidden) return;
                 //控件值异常不序列化
                 if (value == undefined) return;
                 //配置要求空值不序列化
@@ -151,7 +170,6 @@
             return data;
 
         }
-
     }
 
     /**
