@@ -9,12 +9,12 @@
     }
 </style>
 <body attr>
-<input type="checkbox" />
+<input type="checkbox"/>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
-<script type="text/javascript" src="../js/jquery.ajax.cache-1.0.js"></script>
+<script type="text/javascript" src="../js/ajax.interceptor-1.0.js"></script>
 <script type="text/javascript">
 
     $("#layer-tip2").on("click", function () {
@@ -62,6 +62,12 @@
         });
     }
 
+
+    function test(a, b, c, d) {
+        var args = Array.prototype.slice.call(arguments)
+        console.log(args);
+
+    }
 
 
 </script>
