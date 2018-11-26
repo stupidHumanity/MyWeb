@@ -7,14 +7,36 @@
     .change {
         height: 50px !important;
     }
+
+    .disable {
+        border: 1px transparent solid !important;
+        background: transparent !important;
+        cursor: default !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+    }
+
 </style>
 <body attr>
-<input type="checkbox"/>
+<input type="checkbox"/> <br>
+<a href="#" class="link" onclick="alert()">a1</a> <br>
+<a href="#" class="link" onclick="alert()">a2</a> <br>
+<a href="#" onclick="allAlert()" consoleSelf="boom,yes" attr>all</a> <br>
+<div class="item-container">
+    <input type="text" value="12346daada"/> <br>
+    <input type="text" value="fuk zx y"/> <br>
+    <span>your mother is boom!</span>
+</div>
+<select>
+    <option value="">请选择</option>
+    <option value="">请选择2</option>
+    <option value="">请选择3</option>
+</select>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
-<script type="text/javascript" src="../js/ajax.interceptor-1.0.js"></script>
 <script type="text/javascript">
 
     $("#layer-tip2").on("click", function () {
@@ -41,33 +63,59 @@
         console.log(year + '年' + month + "月");
     }
 
-    sessionStorage
+    function alert() {
+        var e = event.triggered || event.target;
 
-    function AssertMessage(message) {
-        var cnChars = message.match(/[\u4e00-\u9fa5]+/g);
-        //     var reg = new RegExp(',', "g");
-        //  if (cnChars == null) return false;
-        cnChars = cnChars.join("");
-        //.replace(reg, "");
-        return (cnChars.length / message.length) > 0.45;
+        var htm = $(e).html();
+        console.log(htm + " clicked!");
+        if (event.triggered != undefined) {
+            console.log("tigger is " + event.target.innerHTML);
+        }
     }
 
-    function doPost() {
-        $.ajax({
-            url: "https;//www.baidu.com/",
-            type: "POST",
-            success: function (response) {
-                console.log(response);
-            }
+
+    $.fn.traversal = function (action) {
+        for (var key in this[0]) {
+            action.call(key, this[0][key]);
+        }
+        return this[0];
+    }
+
+    var array = [1, 2, 3, 4, 5, 7];
+    $(array).traversal(function (k, v) {
+        if (v % 2 == 0) {
+            this.remove(k);
+        }
+    });
+
+    $.fn.disable = function () {
+        this.each(function (i, e) {
+            $(e).attr("disabled", "disabled").addClass("disable");
         });
     }
 
+    $.fn.enable = function () {
+        this.each(function (i, e) {
+            var $e = $(e);
+            $e.removeAttr("disabled");
+            if ($e.hasClass("disable"))
+                $e.removeClass("disable");
+        });
+    }
+    $("div.item-container").on("blur", "*", function () {
+      //  console.log("out of this div now !");
+        console.log("blur:"+document.activeElement);
 
-    function test(a, b, c, d) {
-        var args = Array.prototype.slice.call(arguments)
-        console.log(args);
+    });
+    $("div.item-container").on("focus", "*", function () {
+        //  console.log("out of this div now !");
+        console.log("focus:"+document.activeElement);
+
+    });
+    Object.prototype.injectBefore=function(){
 
     }
+    $.fn.trigger.injectBefore()
 
 
 </script>

@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>layer</title>
+</head>
+<style type="text/css">
+
+</style>
+<body>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
+<script type="text/javascript">
+
+    function inject(method, injection) {
+
+        if (typeof method !== "function") console.error("inject must act on function !");
+        if (typeof injection !== "function") console.error("injection must be a function !");
+        // var args = Array.prototype.slice(method.prototype.arguments);
+        eval("window." + method + "=") = method;
+        window[method] = function () {
+            if (injection.call() != false) {
+                injection.host.call();
+            }
+
+        }
+    }
+
+    Function
+
+
+
+
+    sayHello = function (name) {
+        console.log("hello ,"+name+"!");
+    }
+
+
+
+
+
+
+    sayHello= sayHello.inject(function(name){
+        if(name.match(/^\w+$/)!=null){
+            console.log(name +" is a English!");
+        }else{
+            console.log(name +" 是个中国人!");
+        }
+    });
+
+
+</script>
