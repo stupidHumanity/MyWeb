@@ -4,50 +4,65 @@
     <title>layer</title>
 </head>
 <style type="text/css">
-
+    .line2 {
+        display: -webkit-box;
+        overflow: hidden;
+        white-space: normal!important;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        min-width: 150px;
+        word-break: break-all;
+        width: 300px;
+        display: inline-block;
+    }
 </style>
 <body>
+<span class="line2">今天是好多APP的“悲惨日”啊,都被苹果下架了。 事情是这样的,今日早间,网传苹果APP Store集中暂停下载了包括拼多多、搜狗地图、搜狗导航、途虎养车、追书神</span>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
 <script type="text/javascript">
 
-    function inject(method, injection) {
 
-        if (typeof method !== "function") console.error("inject must act on function !");
-        if (typeof injection !== "function") console.error("injection must be a function !");
-        // var args = Array.prototype.slice(method.prototype.arguments);
-        eval("window." + method + "=") = method;
-        window[method] = function () {
-            if (injection.call() != false) {
-                injection.host.call();
+    var text = "今天是好多APP的“悲惨日”啊,都被苹果下架了。 事情是这样的,今日早间,网传苹果APP Store集中暂停下载了包括拼多多、搜狗地图、搜狗导航、途虎养车、追书神";
+    text += text;
+
+
+    $.blockText = function (text,len, row) {
+
+        function block(str, len) {
+            var count = 0, i = 0;
+            while (count++ < len) {
+                if (str.charCodeAt(i) > 255) count++;
+                i++;
             }
-
+         //   if(str.charCodeAt(i+1))
+            return str.substring(0, i);
         }
-    }
 
-    Function
+        len = len || 20;
+        row = row || 1;
 
+        if (typeof text !== "string") console.error("function blockText must act on string !");
+        var htm = "", fragment;
+        var loop = true;
+        while (loop) {
+            fragment=block(text,len);
+            htm+=fragment;
 
-
-
-    sayHello = function (name) {
-        console.log("hello ,"+name+"!");
-    }
-
-
-
-
-
-
-    sayHello= sayHello.inject(function(name){
-        if(name.match(/^\w+$/)!=null){
-            console.log(name +" is a English!");
-        }else{
-            console.log(name +" 是个中国人!");
+            if(fragment!=text){
+                htm+='<br/>';text=text.substring(fragment.length,text.length);
+            }else{
+                loop=false;
+            }
         }
-    });
+
+        return '<span>' + htm + '</span>';
+
+    }
 
 
 </script>
