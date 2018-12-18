@@ -19,50 +19,26 @@
     }
 </style>
 <body>
-<span class="line2">今天是好多APP的“悲惨日”啊,都被苹果下架了。 事情是这样的,今日早间,网传苹果APP Store集中暂停下载了包括拼多多、搜狗地图、搜狗导航、途虎养车、追书神</span>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery.extend-1.0.js"></script>
 <script type="text/javascript">
-
-
-    var text = "今天是好多APP的“悲惨日”啊,都被苹果下架了。 事情是这样的,今日早间,网传苹果APP Store集中暂停下载了包括拼多多、搜狗地图、搜狗导航、途虎养车、追书神";
-    text += text;
-
-
-    $.blockText = function (text,len, row) {
-
-        function block(str, len) {
-            var count = 0, i = 0;
-            while (count++ < len) {
-                if (str.charCodeAt(i) > 255) count++;
-                i++;
-            }
-         //   if(str.charCodeAt(i+1))
-            return str.substring(0, i);
+window.console_log_proxy=window.console.log;
+window.console_log_setting_whether_log=true;
+window.console.log=function(){
+    var args=Array.prototype.slice.call(arguments);
+    if(window.console_log_setting_whether_log===true){
+        for(var i in args) {
+            window.console_log_proxy.call(null, args[i]);
         }
-
-        len = len || 20;
-        row = row || 1;
-
-        if (typeof text !== "string") console.error("function blockText must act on string !");
-        var htm = "", fragment;
-        var loop = true;
-        while (loop) {
-            fragment=block(text,len);
-            htm+=fragment;
-
-            if(fragment!=text){
-                htm+='<br/>';text=text.substring(fragment.length,text.length);
-            }else{
-                loop=false;
-            }
-        }
-
-        return '<span>' + htm + '</span>';
-
     }
+}
 
+function switchConsoleLog(){
+    window.console_log_setting_whether_log=window.console_log_setting_whether_log===false;
+}
+
+console.log("you monther boom！");
 
 </script>
