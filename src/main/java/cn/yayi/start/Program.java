@@ -26,6 +26,7 @@ public class Program {
            put("title","标题");
            put("message","消息");
            put("table","表格");
+           put("auhtoer","zyw");
         }};
         PoiUtil.doReplace("D:\\ideaWorkSpace\\MyWeb\\src\\main\\resources\\tplt.docx",para,"C:\\Users\\DGG-S27-D-20\\Desktop\\tplt.docx");
 

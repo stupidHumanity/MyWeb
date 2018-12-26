@@ -192,23 +192,6 @@
         return navigator.userAgent.toLowerCase().match(/wow\d+/).toString().match(/\d+/).toString();
     }
 
-    /**
-     * 截断较长文本
-     * @param line
-     * @param row
-     * @returns {string}
-     */
-    $.fn.blockText=function (line,row){
-        line=line||3;
-        row=row||20;
-        var text=this;
-        var htm="";
-        var reg=/./
-
-
-
-        return htm;
-}
 
 })(jQuery);
 

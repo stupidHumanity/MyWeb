@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class PoiUtil {
 
     private static final Pattern pattern = Pattern.compile("\\$\\{.+\\}", Pattern.CASE_INSENSITIVE);
+
     private static void doReplace(XWPFParagraph paragraph, Map<String, String> para) throws Exception {
         List<XWPFRun> runList = paragraph.getRuns();
 
@@ -21,18 +22,19 @@ public class PoiUtil {
             Matcher matcher;
             while ((matcher = pattern.matcher(text)).find()) {
                 String key = matcher.group(0);
-                key=key.substring(2,key.length()-1);
+                key = key.substring(2, key.length() - 1);
                 if (para.containsKey(key)) {
                     text = matcher.replaceFirst(para.get(key));
                 } else {
-                    throw new Exception("未找到" +key + "对应的替换值");
+                    throw new Exception("未找到" + key + "对应的替换值");
                 }
             }
             if (!run.text().equals(text)) {
-                run.setText(text,0);
+                run.setText(text, 0);
             }
         }
     }
+
     private static XWPFDocument doReplace(XWPFDocument document, Map para) throws Exception {
         Iterator<IBodyElement> iterator = document.getBodyElementsIterator();
         while (iterator.hasNext()) {
@@ -62,11 +64,12 @@ public class PoiUtil {
 
     /**
      * 　替换word中${key}占位符，其中key对应value应在para中指定
+     *
      * @param resource 模板路径
-     * @param para 替换键值对
-     * @param target 生成位置
+     * @param para     替换键值对
+     * @param target   生成位置
      */
-    public static void doReplace(String resource, Map<String,String> para,String target){
+    public static void doReplace(String resource, Map<String, String> para, String target) {
         try {
             InputStream inputStream = new FileInputStream(resource);
             XWPFDocument hwpfDocument = new XWPFDocument(inputStream);
@@ -81,13 +84,15 @@ public class PoiUtil {
             OutputStream outputStream = new FileOutputStream(file);
             hwpfDocument.write(outputStream);
             outputStream.close();
+        } catch (Exception e) {
         }
-        catch (Exception e){}
 
 
     }
 
-    public static void doExport() throws Exception{
+
+
+    public static void doExport() throws Exception {
         throw new Exception("not implement ,yet!");
     }
 }
