@@ -1,0 +1,67 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>layer</title>
+    <style type="text/css">
+        .move {
+            animation: showbar 0.8s forwards;
+        }
+
+        .hide {
+            animation: hide 4s forwards;
+        }
+
+        @keyframes showbar {
+            from {
+                right: -60px;
+            }
+            to {
+                right: 8px;
+            }
+        }
+
+        @keyframes hide {
+            to {
+                width: 0px;
+                height: 0px
+            }
+        }
+    </style>
+</head>
+<body>
+<p>head</p>
+<div style="height:3000px;">
+    <div id="cube" style="width: 100px;height:50px;background-color: darkgoldenrod;">
+        hua q
+
+    </div>
+    <p>hua q 2</p>
+</div>
+<p>end</p>
+
+<div id="bar"
+     style="height: 200px;width: 100px;background-color: blanchedalmond;position: fixed;right: -60px;top: 400px;">bar
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+
+    $.fn.hide = function () {
+       var $e = this;
+        $e.prop("jq-anm-pre-height", $e.height());
+        $e.prop("jq-anm-pre-width", $e.width());
+        $e[0].style.overflow='hidden';
+        $e.animate({height: "0px", width: "0px"});
+
+    }
+    $.fn.show = function () {
+      var  $e = this;
+        var height = $e.prop("jq-anm-pre-height");
+        var width = $e.prop("jq-anm-pre-width");
+        $e.animate({height: height, width: width},function(){
+            $e[0].style.overflow='visible';
+        });
+
+    }
+</script>

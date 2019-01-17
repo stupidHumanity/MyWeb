@@ -17,7 +17,7 @@ import org.apache.poi.xwpf.usermodel.*;
 public class Program {
     public static void main(String[] args) throws Exception {
 
-        doPoiTest();
+        doTest();
     }
 
 
@@ -31,7 +31,19 @@ public class Program {
         PoiUtil.doReplace("D:\\ideaWorkSpace\\MyWeb\\src\\main\\resources\\tplt.docx",para,"C:\\Users\\DGG-S27-D-20\\Desktop\\tplt.docx");
 
     }
+private static void doTest(){
+    Map<String,Object> para = new HashMap(){{
+        put("orgLevel",1);
+        put("orgId",2);
 
+    }};
+    Iterator<String> it=  para.keySet().iterator();
+    while (it.hasNext()){
+        String key=it.next();
+        if(para.get(key)==null) para.remove(key);
+    }
+    System.out.println(para.toString());
+}
 
 
 

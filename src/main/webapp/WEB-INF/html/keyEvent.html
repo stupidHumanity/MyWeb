@@ -1,0 +1,80 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>layer</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+<div>
+    <input type="text" name="input1" width="150"><br>
+    <input type="text" name="input2" width="150">
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+
+
+    $._keybord_code = {
+        "s": 83,
+        "enter": 13,
+        "q": 81
+    }
+
+    $.fn.addKeyboardListener = function (shortcut, callback) {
+        //参数检查
+        if (typeof callback !== "function") console.error("callback should be a function !");
+
+
+//        //屏蔽document默认事件
+//
+//        document.onkeydown = function (we) {
+//            if (we.ctrlKey !== keyinput.ctrlKey) return;
+//            if (we.shiftKey !== keyinput.shiftKey) return;
+//            if (we.altKey !== keyinput.altKey) return;
+//            if (we.keyCode !== keyinput.keyCode) return;
+//        //   we.preventDefault();
+//           // we.returnValue = false;
+//         //   return false;
+//        };
+
+        var keyinput = getKeyEvent(shortcut);
+        this.each(function (i, e) {
+            e.addEventListener("keypress", function (event) {
+
+                if ((keyinput.ctrlKey === event.ctrlKey) && (keyinput.shiftKey === event.shiftKey) && (keyinput.altKey === event.altKey)) ;
+                else return;
+                if (keyinput.keyCode === event.keyCode) {
+                    callback(event);
+                }
+
+            });
+        });
+
+        function getKeyEvent(hotkey) {
+            if (typeof hotkey !== "string") console.error("shortcut should be a string !");
+            hotkey = hotkey.toLowerCase();
+            var e = {};
+            e.ctrlKey = hotkey.indexOf("ctrl") > -1;
+            e.altKey = hotkey.indexOf("alt") > -1;
+            e.shiftKey = hotkey.indexOf("shift") > -1;
+            e.keyCode = hotkey.replace(/(ctrl|shift|alt|\+)/g, "");
+            e.keyCode = $._keybord_code[e.keyCode];
+            if (e.keyCode === undefined) {
+                console.error("no init code in dictionary!");
+            }
+            return e;
+        }
+
+
+    }
+
+    $("div").addKeyboardListener("ctrl+enter", function (event) {
+        console.log(event);
+    });
+
+
+</script>
+
+

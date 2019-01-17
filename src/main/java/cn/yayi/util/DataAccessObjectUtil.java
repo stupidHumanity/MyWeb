@@ -22,10 +22,8 @@ public class DataAccessObjectUtil {
         DataAccessObjectUtil util = new DataAccessObjectUtil();
         util.setResourcepath("\\src\\main\\java");
         util.setPackage("cn.yayi");
-        util.addExclude("creater_id", "creater_name", "creater_org_id", "creater_org_name", "create_time");
-        util.addExclude("updater_id", "updater_name", "updater_org_id", "updater_org_name", "update_time");
-        util.setConnection("172.16.0.62", 8066, "db_iboss_kjsc", "db_iboss", "db_iboss");
-        util.excute("kjsc_co");
+        util.setConnection("192.168.254.76", 5433, "db_iboss_kjsc", "db_iboss", "db_iboss");
+        util.excute("visit_record");
         util.dispose();
     }
 
