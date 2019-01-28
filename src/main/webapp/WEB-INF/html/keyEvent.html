@@ -8,48 +8,48 @@
 <body>
 <div>
     <input type="text" name="input1" width="150"><br>
-    <input type="text" name="input2" width="150">
+    <input type="text" name="input2" width="150"><br>
+    <span>value holder</span>
+    <input type="file" value="upload">
 </div>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 
+    /**
+     * 绑定键盘事件
+     * @param shortcut 键盘命令
+     * @param callback 触发事件
+     * @param preventDefault 是否阻止默认事件
+     */
+    $.fn.addKeyboardListener = function (shortcut, callback, preventDefault) {
+        $._keybord_code = $._keybord_code || {
+            "s": 83,
+            "enter": 13,
+            "space": 32,
+            "q": 81
+        };
+        $._keybord_interceptKeyCode = $._keybord_interceptKeyCode || true;
 
-    $._keybord_code = {
-        "s": 83,
-        "enter": 13,
-        "q": 81
-    }
-
-    $.fn.addKeyboardListener = function (shortcut, callback) {
         //参数检查
         if (typeof callback !== "function") console.error("callback should be a function !");
 
-
-//        //屏蔽document默认事件
-//
-//        document.onkeydown = function (we) {
-//            if (we.ctrlKey !== keyinput.ctrlKey) return;
-//            if (we.shiftKey !== keyinput.shiftKey) return;
-//            if (we.altKey !== keyinput.altKey) return;
-//            if (we.keyCode !== keyinput.keyCode) return;
-//        //   we.preventDefault();
-//           // we.returnValue = false;
-//         //   return false;
-//        };
-
         var keyinput = getKeyEvent(shortcut);
         this.each(function (i, e) {
-            e.addEventListener("keypress", function (event) {
-
+            e.addEventListener("keydown", function (event) {
+                if ($._keybord_interceptKeyCode) {
+                    console.log(event.keyCode);
+                }
                 if ((keyinput.ctrlKey === event.ctrlKey) && (keyinput.shiftKey === event.shiftKey) && (keyinput.altKey === event.altKey)) ;
                 else return;
                 if (keyinput.keyCode === event.keyCode) {
+                    event.stopPropagation();//阻止继续冒泡
+                    if (preventDefault) event.preventDefault();//阻止默认事件
                     callback(event);
                 }
 
-            });
+            }, true);
         });
 
         function getKeyEvent(hotkey) {
@@ -67,14 +67,24 @@
             return e;
         }
 
+    };
 
-    }
+    $("div").addKeyboardListener("ctrl+q", function (event) {
+       var $inputs=$("input");
 
-    $("div").addKeyboardListener("ctrl+enter", function (event) {
-        console.log(event);
-    });
+       for(var index in $inputs){
+           if($inputs[index]===event.target){
+               console.log(index);
+               break;
+           }
+       }
 
 
+
+    },true);
+
+ var span=document.getElementsByTagName("span")[0];
+        span.data={1:2,3:4};
 </script>
 
 
