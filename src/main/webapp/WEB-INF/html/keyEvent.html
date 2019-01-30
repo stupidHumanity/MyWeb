@@ -11,6 +11,7 @@
     <input type="text" name="input2" width="150"><br>
     <span>value holder</span>
     <input type="file" value="upload">
+    <button  value="fuck you">1111</button>
 </div>
 </body>
 </html>
@@ -85,6 +86,19 @@
 
  var span=document.getElementsByTagName("span")[0];
         span.data={1:2,3:4};
+
+
+        $("button").on("hide",function(){
+            console.log("隐藏额外事件！")
+        })
+     window._intercept_hide=$.fn.hide;
+        $.fn.hide=function(){
+            console.log("隐藏额外事件！");
+            window._intercept_hide.call(this);
+        }
+        $("button").on("click",function(){
+            $(this).hide();
+        });
 </script>
 
 
