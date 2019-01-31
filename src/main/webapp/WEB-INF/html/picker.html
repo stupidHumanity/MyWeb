@@ -3,96 +3,75 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>picker</title>
     <style type="text/css">
-
         .picker-reset {
-            font-size: 15px;
-            color: #4a98ff;
+            font-size: 14px;
+            color: #46a4ff;
             float: right;
             cursor: pointer;
+            margin: auto 8px;
+            padding-top: 5px;
         }
 
         .picker-dialog {
-            /*left: 42px;*/
-            /*top: 52px;*/
             position: absolute;
-            border: 1px solid #878787;
             min-height: 110px;
-            min-width: 400px;
+            min-width: 380px;
             display: inline-block;
+            border: 1px solid #e8e8e8;
         }
 
         .picker-dialog a {
             text-decoration: none;
+            display: inline-block;
         }
 
         .picker-dialog-tab {
-            padding: 4px;
-            height: 28px;
-            background-color: #c9c9c9;
+            background-color: #e8e8e8;
         }
 
         .picker-dialog-tab > a {
+
+            padding: 4px 18px;
+            color: #1E9FFF;
+            background-color: #eaeaea;
+            border-left: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+
+        }
+
+        .picker-dialog-tab > a:last-child {
+            background-color: white;
+            border-bottom-color:white ;
+            display: inline-block;
+            color: #333333;
         }
 
         .picker-dialog-container > a {
-            margin: 0px 8px;
+
+            margin: 5px 8px;
+            display: inline-block;
             font-size: 14px;
             white-space: nowrap;
+            color: #333333;
         }
 
-        .selected {
-            background-color: #ffffff;
-            color: #30c7ff;
-        }
     </style>
 </head>
 <body>
-<div height="200px" style="background-color: #878787;">ssss</div>
-<span height="200px" style="background-color: #878787;">ssss</span>
-<input type="text" name="target" width="100%" id="picker">
-<!--<div class="picker-dialog">-->
-    <!--<div class="picker-dialog-tab">-->
-        <!--<a href="#" data-id="1">一级菜单</a>-->
-        <!--<a href="#" class="selected">二级菜单</a>-->
-        <!--<span href="javascript:void(0);" class="picker-reset">清空</span>-->
-    <!--</div>-->
-    <!--<div class="picker-dialog-container">-->
-        <!--<a href="#">北京</a> <a href="#">成都</a>-->
-    <!--</div>-->
-<!--</div>-->
-<span>fffff</span>
+<input type="text" id="picker"/>
+
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript">
-    EventTarget.prototype.on = function (type, ...arg) {
-        let str, data, callback;
-        arg.forEach((item) => {
-            //str要么是一个false要么是一个字符串
-            typeof item == "string" ? str = item : item.toString() == "[object Object]" ? data = item : typeof item == "function" ? callback = item : null;
-        });
-
-        function run(e) {
-            if (data) e.data = data;
-            if (str) {
-                if (e.target.tagName == str.toUpperCase()) {
-                    callback && callback.call(e.target, e)
-                }
-            } else {
-                callback && callback.call(this, e);
-            }
-        }
-
-        this.addEventListener(type, run);
-    };
 
     function addNewStyle(styleId, newStyle) {
-//        var id,data,callback;
+//        let id,data,callback;
 //        args.forEach((item)=>{
 //            //str要么是一个false要么是一个字符串
 //            typeof item=="string"?str=item:item.toString()=="[object Object]"?data=item: typeof item=="function"?callback=item:null;
 //        });
-        var styleElement = document.getElementById(styleId);
+        let styleElement = document.getElementById(styleId);
 
         if (!styleElement) {
             styleElement = document.createElement('style');
@@ -104,26 +83,9 @@
         styleElement.appendChild(document.createTextNode(newStyle));
     }
 
-    function doSth(data, id, pid) {
-        var ids = new Set();
-        var pids = new Set();
-        for (var item of data) {
-            ids.add(item[id]);
-            pids.add(item[pid]);
-        }
-        for (var val of ids) {
-            pids.delete(val);
-        }
-        var result = new Array();
-        for (var item of data) {
-            if (pids.has(item[pid]))
-                result.push(item);
-        }
-        return result;
-    }
 
     function getData(resource, key, value) {
-        var result = new Array();
+        let result = [];
         for (let item of resource) {
             if (item[key] == value)
                 result.push(item);
@@ -131,13 +93,14 @@
         return result;
     }
 
-  function loadOption($container,datas){
+    function loadOption($container, datas) {
         $container.html('');
-      for (let obj of datas) {
-          $container.append('<a href="#">' + obj["name"] + '</a>');
-          $container.find("a").last().prop("data",obj);
-      }
-  }
+        for (let obj of datas) {
+            $container.append('<a href="#">' + obj["name"] + '</a>');
+            $container.find("a").last().prop("data", obj);
+        }
+    }
+
 
 </script>
 <script type="text/javascript">
@@ -145,20 +108,29 @@
 
     $.fn.Chooser = function (resource, option) {
 
-        var defaults = {
+        let defaults = {
             styleId: "style_pikcer",
-            id:'id',
-            pid:'pid',
-            name:'name',
-            value:'value',
-            resource:null
+            id: 'id',
+            pid: 'pid',
+            name: 'name',
+            value: null,
+            placeholder: "请选择",
+            seprator: ' \\ ',
         };
-        var htm = '';
+        let dataStore = {
+            picker: this,
+            resource: null,
+            roots: null
+        }
+        let htm = '';
         $.extend(defaults, option);
-        defaults.resource=resource;
+        //  $.extend(defaults, dataStore);
+        dataStore.resource = resource;
+        dataStore.roots = getRoots(resource, defaults.id, defaults.pid);
         htm = '<div class="picker-dialog">' +
+              '<span href="#" class="picker-reset">清空</span>' +
             '<div class="picker-dialog-tab">' +
-            '<span href="javascript:void(0);" class="picker-reset">清空</span>' +
+            '<a href="#">' + defaults.placeholder + '</a>' +
             '</div>' +
             '<div class="picker-dialog-container">' +
             '</div>' +
@@ -166,55 +138,110 @@
         this.after(htm);
 
         //事件
-        var $dialog = this.next("div.picker-dialog");
-            $dialog.css("left",this.offset().left);
-            $dialog.css("top",this.offset().top + this.outerHeight());
-        var $tab = $dialog.find("div").eq(0);
-        var $container = $dialog.find("div").eq(1);
+        let $dialog = this.next("div.picker-dialog");
+        $dialog.css("left", this.offset().left);
+        $dialog.css("top", this.offset().top + this.outerHeight() + 1);
+        let $tab = $dialog.find("div").eq(0);
+        let $container = $dialog.find("div").eq(1);
         if ($dialog.length === 1) {
+            $dialog.hide();
+            this.on("click", function () {
+                if ($dialog.css("display") === "none") $dialog.show();
+
+            });
             //tab点击
             $tab.on("click", "a", function () {
-                var $e = $(event.target);
-                if ($e.hasClass('selected')) return;
-                $e.addClass('selected');
-                $e.next("a").remove();
-                var datas = getData(dataArray, "pid", $e.attr("data-id"));
-             loadOption($container,datas);
+                let $e = $(event.target);
+                if ($e.html() === defaults.placeholder) return;
+                let datas = getData(dataStore.resource, "pid", $e.prop("data")[defaults.pid]);
+                loadOption($container, datas);
+                $e.removeProp("data");
+                $e.html(defaults.placeholder);
+                $e.nextAll("a").remove();
 
             });
             //item点击
-            $container.on("click",'a',function(){
-                var $e = $(event.target);
-                var data=$e.prop("data");
-                var id=data[defaults.id];
-                var datas= getData(defaults.resource,defaults.pid,id);
-                if(datas.length===0){
-                    $dialog.hide()
-                }else{
-                   loadOption($container,datas);
+            $container.on("click", 'a', function () {
+                let $e = $(event.target);
+                let data = $e.prop("data");
+                let id = data[defaults.id];
+
+                let datas = getData(dataStore.resource, defaults.pid, id);
+                if (datas.length === 0) {
+                    $dialog.hide();
+                    generateValue($tab, data);
+                } else {
+                    $tab.find("a").last().before(event.target);
+                    loadOption($container, datas);
                 }
             });
+            //清空
+            $dialog.on("click", "span", function () {
+                $tab.find("a").not(":last").remove();
+                loadOption($container, dataStore.roots);
+                dataStore.picker.val("");
+            })
         } else {
             console.error("未成功初始化选择框！");
         }
 
 
-        var lv1 = doSth(dataArray, "id", "pid");
-       loadOption($container,lv1);
+        loadOption($container, dataStore.roots);
+
+//        addNewStyle('.box {height: 100px !important;}');
+//        addNewStyle('.hidden {display: none;}');
+
+        function generateValue($tab, last) {
+
+            dataStore.picker.val("");
+            var datas = [];
+            let str = '', val = null;
+            $tab.find("a").each(function (i, e) {
+                let data = $(e).prop("data");
+                if (data === undefined && e.innerHTML === defaults.placeholder) data = last;
+                if (i !== 0) str += defaults.seprator;
+                str += data[defaults.display];
+                if (defaults.value !== null) val = data[defaults.value];
+            });
 
 
-        addNewStyle('.box {height: 100px !important;}');
-        addNewStyle('.hidden {display: none;}');
+            dataStore.picker.attr("data-value", val);
+            dataStore.picker.val(str);
+
+        }
+
+        /**
+         * 获取所有的根元素，即第一级候选项
+         * @param data 数据源集合
+         * @param id 连接关系id
+         * @param pid 连接关系pid
+         * @returns {Array}
+         */
+        function getRoots(data, id, pid) {
+            let ids = new Set();
+            let pids = new Set();
+            for (let item of data) {
+                ids.add(item[id]);
+                pids.add(item[pid]);
+            }
+            for (let val of ids) {
+                pids.delete(val);
+            }
+            let result = [];
+            for (let item of data) {
+                if (pids.has(item[pid]))
+                    result.push(item);
+            }
+            return result;
+        }
 
 
+    };
 
-
-    }
-
-    var dataArray = new Array();
+    let dataArray = [];
+    dataArray.push({id: 2, pid: 0, name: "四川"});
     dataArray.push({id: 1, pid: 0, name: "北京"});
     dataArray.push({id: 11, pid: 1, name: "朝阳区"});
-    dataArray.push({id: 2, pid: 0, name: "四川"});
     dataArray.push({id: 21, pid: 2, name: "成都"});
     dataArray.push({id: 211, pid: 21, name: "武侯区"});
     dataArray.push({id: 212, pid: 21, name: "锦江区"});
@@ -226,6 +253,7 @@
         id: "id",
         pid: "pid",
         display: "name",
+        value: 'id'
     });
 
 
