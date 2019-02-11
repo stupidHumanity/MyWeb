@@ -1,0 +1,105 @@
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>vue.js start</title>
+    <style type="text/css">
+       #app-7  a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    {{message}}
+</div>
+<p></p>
+<div id="app-2">
+    <span v-bind:title="message">鼠标悬停几秒钟查看此处动态绑定的提示信息！</span>
+</div>
+<p></p>
+<div id="app-3" v-if="visible">
+    现在你看到我了
+</div>
+<p></p>
+<div id="app-4">
+    <ol>
+        <li v-for="item in array">
+            {{item}}
+        </li>
+    </ol>
+</div>
+<p></p>
+<div id="app-5">
+    <p>{{message}}</p>
+    <button v-on:click="reverseMsg">reverse</button>
+</div>
+<p></p>
+<div id="app-6">
+    <p>{{message}}</p>
+    <input v-model="message">
+</div>
+<p></p>
+<div id="app-7">
+    <table>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>名称</th>
+            <th>库存</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr-product v-for="item in productList" v-bind:product="item" v-bind:key="item.id"></tr-product>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {message: 'hello vue.js !'}
+    });
+
+    var app2 = new Vue({el: "#app-2", data: {message: '页面加载于 ' + new Date().toLocaleTimeString()}});
+
+    var app3 = new Vue({el: "#app-3", data: {visible: false}});
+
+    var app4 = new Vue({
+        el: "#app-4",
+        data: {
+            array: ["你妈的", "为什么"]
+        }
+    });
+
+    var app5 = new Vue({
+        el: "#app-5",
+        data: {message: "優しい嘘"},
+        methods: {
+            reverseMsg: function () {
+                this.message = this.message.split('').reverse().join('');
+            }
+        }
+    });
+
+    var app6 = new Vue({el: "#app-6", data: {message: 'answer'}});
+
+    Vue.component("tr-product", {
+        props: ['product'],
+        template: '<tr><td></td><td>{{product.name}}</td><td>{{product.store}}</td><td><a href="#">详情</a>&nbsp;&nbsp;<a href="#">备注</a></td></tr>'
+    });
+    var app8 = new Vue({
+        el: "#app-7", data: {
+            productList: [
+                {id: 1, name: 'p1', store: 1},
+                {id: 2, name: 'p2', store: 10},
+                {id: 3, name: 'p3', store: 12},
+                {id: 4, name: 'p4', store: 42},
+                {id: 5, name: 'p5', store: 11}
+            ]
+        }
+    });
+
+</script>
