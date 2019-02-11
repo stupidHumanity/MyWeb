@@ -3,6 +3,28 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>chooser</title>
     <style type="text/css">
+        .icon-angle-double-right {
+            margin-right:.8em ;
+            margin-bottom:0.08em;
+            display: inline-block;
+            width: .4em;
+            height: .4em;
+            border: solid 0.1em;
+            border-bottom: none;
+            border-left: none;
+            transform: rotate(45deg);
+        }
+        .icon-angle-double-right:after {
+            position:absolute ;
+            width: .4em;
+            height: .4em;
+            border: solid 0.1em;
+            border-bottom: none;
+            border-left: none;
+            left:.35em;
+            top:-.45em;
+            content:''
+        }
         .chooser a {
             text-decoration: none;
         }
@@ -48,12 +70,15 @@
             white-space: nowrap;
             color: #333333;
         }
+        .fa-angle-double-right:before{
+            content:"\f101";
+        }
 
     </style>
 </head>
 <body>
 <input type="text" id="chooser"/>
-
+<i class="fa fa-angle-double-right"></i>
 </body>
 </html>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
