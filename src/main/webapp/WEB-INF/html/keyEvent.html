@@ -9,9 +9,10 @@
 <div>
     <input type="text" name="input1" width="150"><br>
     <input type="text" name="input2" width="150"><br>
+    <input type="text" name="age" width="150" accept="/[-\d+]/"><br>
     <span>value holder</span>
     <input type="file" value="upload">
-    <button  value="fuck you">1111</button>
+    <button value="fuck you">1111</button>
 </div>
 </body>
 </html>
@@ -40,7 +41,7 @@
         this.each(function (i, e) {
             e.addEventListener("keydown", function (event) {
                 if ($._keybord_interceptKeyCode) {
-                    console.log(event.keyCode);
+                    //   console.log(event.keyCode);
                 }
                 if ((keyinput.ctrlKey === event.ctrlKey) && (keyinput.shiftKey === event.shiftKey) && (keyinput.altKey === event.altKey)) ;
                 else return;
@@ -71,34 +72,41 @@
     };
 
     $("div").addKeyboardListener("ctrl+q", function (event) {
-       var $inputs=$("input");
+        var $inputs = $("input");
 
-       for(var index in $inputs){
-           if($inputs[index]===event.target){
-               console.log(index);
-               break;
-           }
-       }
-
-
-
-    },true);
-
- var span=document.getElementsByTagName("span")[0];
-        span.data={1:2,3:4};
-
-
-        $("button").on("hide",function(){
-            console.log("隐藏额外事件！")
-        })
-     window._intercept_hide=$.fn.hide;
-        $.fn.hide=function(){
-            console.log("隐藏额外事件！");
-            window._intercept_hide.call(this);
+        for (var index in $inputs) {
+            if ($inputs[index] === event.target) {
+                console.log(index);
+                break;
+            }
         }
-        $("button").on("click",function(){
-            $(this).hide();
-        });
+
+
+    }, true);
+
+    var span = document.getElementsByTagName("span")[0];
+    span.data = {1: 2, 3: 4};
+
+
+    $("button").on("hide", function () {
+        console.log("隐藏额外事件！")
+    })
+    window._intercept_hide = $.fn.hide;
+    $.fn.hide = function () {
+        console.log("隐藏额外事件！");
+        window._intercept_hide.call(this);
+    }
+    $("button").on("click", function () {
+        $(this).hide();
+    });
+
+    $("input[accept]").on("keydown", function () {
+        var reg = eval($(event.target).attr("accept"));
+        if (event.keyCode === 8) return;//退格键不阻止
+        if (!event.key.toString().match(reg)) {
+            event.preventDefault();
+        }
+    })
 </script>
 
 

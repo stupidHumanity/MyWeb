@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>vue.js start</title>
     <style type="text/css">
-       #app-7  a{
+       table  a{
             text-decoration: none;
         }
     </style>
@@ -39,7 +39,7 @@
     <input v-model="message">
 </div>
 <p></p>
-<div id="app-7">
+<div>
     <table>
         <thead>
         <tr>
@@ -50,7 +50,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr-product v-for="item in productList" v-bind:product="item" v-bind:key="item.id"></tr-product>
+        <div  id="app-7">
+            <tr-product v-for="(item ,index) in productList" v-bind:product="item" v-bind:key="item.id" v-bind:index="index"></tr-product>
+        </div>
         </tbody>
     </table>
 </div>
@@ -87,8 +89,8 @@
     var app6 = new Vue({el: "#app-6", data: {message: 'answer'}});
 
     Vue.component("tr-product", {
-        props: ['product'],
-        template: '<tr><td></td><td>{{product.name}}</td><td>{{product.store}}</td><td><a href="#">详情</a>&nbsp;&nbsp;<a href="#">备注</a></td></tr>'
+        props: ['product','index'],
+        template: '<tr>{{index}}<td></td><td>{{product.name}}</td><td>{{product.store}}</td><td><a href="#">详情</a>&nbsp;&nbsp;<a href="#">备注</a></td></tr>'
     });
     var app8 = new Vue({
         el: "#app-7", data: {
