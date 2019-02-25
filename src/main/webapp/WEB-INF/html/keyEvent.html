@@ -9,7 +9,7 @@
 <div>
     <input type="text" name="input1" width="150"><br>
     <input type="text" name="input2" width="150"><br>
-    <input type="text" name="age" width="150" accept="/[-\d+]/"><br>
+    <input type="text" name="age" width="150" accept="integer"><br>
     <span>value holder</span>
     <input type="file" value="upload">
     <button value="fuck you">1111</button>
@@ -106,7 +106,23 @@
         if (!event.key.toString().match(reg)) {
             event.preventDefault();
         }
-    })
+    });
+
+
+    $("input[accept]").on("input", function () {
+        var $e = $(event.target);
+        var reg = $e.attr("accept").toLowerCase();
+        var val = $e.val();
+        if (reg === "integer") {
+            val = val.replace(/[^-\d]/g, '');
+            $e.val(val);
+        }
+        else {
+            console.error("not implement !");
+        }
+    });
+
+
 </script>
 
 
