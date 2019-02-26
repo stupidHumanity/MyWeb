@@ -32,7 +32,7 @@ public class DataAccessObjectUtil {
     private void generateEntity(String className, List<Property> table) {
 
 
-        String packageName = "package " + this.path.getString("package").concat(".entity");
+        String packageName = "package " + this.path.getString("package").concat(".constant");
         Set<String> imports = new HashSet<>();
         StringBuilder fields = new StringBuilder();
         StringBuilder getterSetter = new StringBuilder();
@@ -64,7 +64,7 @@ public class DataAccessObjectUtil {
         String entityText = String.format("%s;\n\n %s\n public class %s { \n%s%s \n } ", packageName, importStr.toString(), className, fields.toString(), getterSetter.toString());
 
         try {
-            File entity = new File(this.getFileRealPath("entity", className + ".java"));
+            File entity = new File(this.getFileRealPath("constant", className + ".java"));
             if (entity.exists()) {
                 entity.delete();
             }
@@ -112,7 +112,7 @@ public class DataAccessObjectUtil {
     public DataAccessObjectUtil() {
         String path = new File("").getAbsolutePath();
         this.path.put("project", path);
-        this.path.put("entity", "\\entity");
+        this.path.put("constant", "\\constant");
         this.path.put("dao", "\\dao");
         this.path.put("mapper", "\\dao\\mapper");
 
@@ -146,7 +146,7 @@ public class DataAccessObjectUtil {
         ArrayList arrayList = new ArrayList() {{
             add("dao");
             add("mapper");
-            add("entity");
+            add("constant");
         }};
         if (arrayList.contains(type)) {
             return String.format("%s%s\\%s%s\\%s", this.path.getString("project"), this.path.getString("src"), this.path.getString("package").replace(".", "\\"), this.path.getString(type), fileName);

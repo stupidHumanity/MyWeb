@@ -16,6 +16,7 @@ import cn.yayi.bean.User;
 import cn.yayi.service.GenericService;
 import cn.yayi.service.impl.PropertyService;
 import cn.yayi.util.PoiUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.xwpf.usermodel.*;
 
 /**
@@ -28,9 +29,20 @@ public class Program {
     }
 
 
-
-
     private static void doTest() throws Exception {
+
+        User user=new User();
+        user.setName("admin");
+
+    Object json=    JSONObject.toJSON(user);
+
+
+    }
+
+
+
+    private static void doTest3() throws Exception {
+
         User user=new User();
         user.setName("admin");
         Field field=user.getClass().getSuperclass().getDeclaredField("id");

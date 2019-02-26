@@ -79,7 +79,7 @@ public class MapperReader {
 class Path {
     public static String mapper = "D:\\ideaWorkSpace\\MyWeb\\src\\main\\java\\cn\\yayi\\dao\\mapper\\";
     public static String dao = "D:\\ideaWorkSpace\\MyWeb\\src\\main\\java\\cn\\yayi\\dao\\";
-    public static String entity = "D:\\ideaWorkSpace\\MyWeb\\src\\main\\java\\cn\\yayi\\entity\\";
+    public static String entity = "D:\\ideaWorkSpace\\MyWeb\\src\\main\\java\\cn\\yayi\\constant\\";
 
 }
 
@@ -87,6 +87,6 @@ class Package{
     public static String base="cn.yayi";
     public static String mapper = base+".dao.mapper";
     public static String dao = base+".dao";
-    public static String entity =base+".entity";
+    public static String entity =base+".constant";
 
 }
