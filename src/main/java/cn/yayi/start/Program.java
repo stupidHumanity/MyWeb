@@ -4,10 +4,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,12 +28,12 @@ public class Program {
 
     private static void doTest() throws Exception {
 
-        User user=new User();
-        user.setName("admin");
-
-    Object json=    JSONObject.toJSON(user);
-
-
+        Pattern pattern= Pattern.compile();
+        String[] patterns=new String[]{"^[a-zA-Z]+$","(?<=>)[a-zA-Z]+","(?<=<)[a-zA-Z]+","(?<=%)[a-zA-Z]+(?!%)"};
+        Matcher matcher=pattern.matcher( "%name");
+        if(matcher.find()){
+            String key=matcher.group();
+        }
     }
 
 
