@@ -6,5 +6,5 @@
 
     <!--全局spring包扫描基础包，仅扫描该项目所有包-->
     <context:component-scan base-package="cn.yayi.aop"/>
-    <aop:aspectj-autoproxy/>
+    <!--<aop:aspectj-autoproxy/>-->
 </beans>
